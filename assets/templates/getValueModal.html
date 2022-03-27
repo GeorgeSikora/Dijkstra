@@ -1,0 +1,21 @@
+
+<div class="modal-container">
+    <div class="modal-header">
+        <h3>{title}</h3>
+    </div>
+    <div class="modal-body">
+
+        <div class="forms" style="margin-bottom: 1em;">
+            <input type="text" autocomplete="off" id="{inputUid}" value="{defaultInputValue}">
+        </div>
+
+        <div style="display: flex;">
+            <div style="width: 100%; margin-right: 18px">
+                <button class="modal-btn danger" onclick="mcf.closeModal(); if (mcf.onCancel) mcf.onCancel();">Zrušit</button>
+            </div>
+            <div style="width: 100%">
+                <button class="modal-btn" onclick="mcf.closeModal(); mcf.onConfirm(document.getElementById('{inputUid}').value);">{confirmText}</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+
+$breakpoint-tablet: 1260px;
+@media (max-width: $breakpoint-tablet)
+{
+    .container {
+        width: 95%;
+    }
+}

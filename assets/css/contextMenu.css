@@ -1,0 +1,19 @@
+#ctxmenu {
+  position: absolute;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  border: 1px #000 solid;
+  font-size: 16px;
+}
+
+#ctxmenu > p {
+  padding: 0 1rem;
+  margin: 0;
+}
+
+#ctxmenu > p:hover {
+  background: #000;
+  color: #fff;
+}
+/*# sourceMappingURL=contextMenu.css.map */

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijkstrův algoritmus</title>
+
+    <link rel="stylesheet" href="assets/css/home.css">
+    <link rel="stylesheet" href="assets/css/modal.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/contextMenu.css">
+
+    <script src="https://kit.fontawesome.com/99325c90c2.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
+
+    <script>
+        const PUBLIC_URL = 'http://127.0.0.1:5500';
+    </script>
+
+    <script src="assets/scripts/moduleCommonFunctions.js"></script>
+    <script src="assets/scripts/main.js" defer></script>
+    <script src="assets/scripts/scene.js"></script>
+    <script src="assets/scripts/point.js"></script>
+    <script src="assets/scripts/connection.js"></script>
+    <script src="assets/scripts/collisionRules.js"></script>
+    <script src="assets/scripts/panel.js" defer></script>
+    <script src="assets/scripts/interface.js" defer></script>
+
+</head>
+<body>
+
+<div class="container" id="main-container">
+
+    <h1 class="title">
+        <p class="title--main">Dijkstrův</p>
+        <p class="title--sub">algoritmus</p>
+    </h1>
+
+    <div class="panel" id="main-panel">
+        <button id="main-panel__cursor"         class="btn btn--selected" title="Kurzor"><i class="fa-solid fa-arrow-pointer"></i></button>
+        <button id="main-panel__addpoint"       class="btn" title="Přidat body"><i class="fa-brands fa-adn"></i></button>
+        <button id="main-panel__connection"     class="btn" title="Vytvořit propojení"><i class="fa-solid fa-circle-nodes"></i></button>
+        <button id="main-panel__getpath"        class="btn" title="Získat cestu"><i class="fa-solid fa-map-pin"></i></button>
+
+        <div class="panel__spacer"></div> 
+        
+        <button id="main-panel__fullscreen"     class="btn" title="Celá obrazovka"><i class="fa-solid fa-expand-wide"></i></button>
+        <button id="main-panel__loadscene"      class="btn" title="Načtení scény"><i class="fa-solid fa-file-arrow-up"></i></button>
+        <button id="main-panel__savescene"      class="btn" title="Uložení scény"><i class="fa-solid fa-floppy-disk"></i></button>
+        <button id="main-panel__searchscene"    class="btn" title="Načtení z projektů"><i class="fa-solid fa-folder-magnifying-glass"></i></button>
+        <button id="main-panel__removescene"    class="btn" title="Vymazání scény"><i class="fa-solid fa-trash"></i></button>
+    </div>
+
+    <main id="main-sketch"></main>
+
+    <div>
+        <div class="dot-spacer"></div>
+        <div class="dot-spacer"></div>
+        <div class="dot-spacer"></div>
+    </div>
+
+    <div class="process-example">
+        <div class="process-example__header">
+            <h2>Postup</h2>
+            <div class="panel" id="main-panel">
+                <button id="main-panel__prevstep"       class="btn" title="Předešlý krok"><i class="fa-solid fa-angle-left"></i></button>
+                <button id="main-panel__nextstep"       class="btn" title="Další krok"><i class="fa-solid fa-angle-right"></i></button>
+                <button id="main-panel__finalresult"    class="btn" title="Zobrazit výsledek"><i class="fa-solid fa-flag-checkered"></i></button>
+            </div>
+        </div>
+
+        <hr>
+        
+        <div class="process-example__totals">
+
+            <div id="path-totals"></div>
+
+            <h3>Větvení bodů</h3>
+            <hr>
+
+            <div id="path-branching"></div>
+
+            <!--
+            <h4>1.</h4>
+            <div class="point-line">
+                <div class="point-line__point">B</div>
+
+                <div class="point-line__row">
+                    <div class="point-line__row__value"><strong>B = 8</strong> A <i class="fa-light fa-arrow-right-long"></i> B <i class="fa-light fa-arrow-right-long"></i> D <i class="fa-light fa-arrow-right-long"></i> F <i class="fa-light fa-arrow-right-long"></i> Z </div>
+                    <div class="point-line__row__value"><strong>B = 8</strong> A <i class="fa-light fa-arrow-right-long"></i> B <i class="fa-light fa-arrow-right-long"></i> D <i class="fa-light fa-arrow-right-long"></i> F <i class="fa-light fa-arrow-right-long"></i> Z </div>
+                    <div class="point-line__row__value"><strong>B = 8</strong> A <i class="fa-light fa-arrow-right-long"></i> B <i class="fa-light fa-arrow-right-long"></i> D <i class="fa-light fa-arrow-right-long"></i> F <i class="fa-light fa-arrow-right-long"></i> Z </div>
+                    <div class="point-line__row__value"><strong>B = 8</strong> A <i class="fa-light fa-arrow-right-long"></i> B <i class="fa-light fa-arrow-right-long"></i> D <i class="fa-light fa-arrow-right-long"></i> F <i class="fa-light fa-arrow-right-long"></i> Z </div>
+                </div>
+
+                <svg id="testsvg" height="500" width="150" style="position: absolute; z-index: -1; stroke-width: 2; stroke:#888;">
+                    Sorry, your browser does not support inline SVG.
+                </svg>
+            </div>
+            -->
+
+        </div>
+    </div>
+
+    <div>
+        <div class="dot-spacer"></div>
+        <div class="dot-spacer"></div>
+        <div class="dot-spacer"></div>
+    </div>
+    
+    <h2>Edsger Dijkstra</h2>
+    <hr>
+
+    <div class="edsger-dijkstra">
+        <img src="./assets/images/EdsgerDijkstra.jpg" alt="Edsger Dijkstra" class="edsger-dijkstra__profile">
+        <p class="edsger-dijkstra__text">Mezi Dijkstrovy nejznámější příspěvky informatice patří algoritmus pro nalezení nejkratší cesty v grafu, označovaný dnes jako <strong>Dijkstrův&nbsp;algoritmus</strong>, a idea <strong>semaforu</strong>, nástroje pro synchronizaci vícero procesorů a programů.<br><br>Po ukončení studia na vysoké škole a získání titulu v oboru <strong>fyziky</strong> začal se Dijkstra zabývat <strong>programováním</strong>.<br><br>V té době se ale setkal s problémem, jímž byl fakt, že programování se oficiálně ještě nepovažovalo za profesi. Z toho důvodu pokračoval v <strong>práci v Matematickém centru</strong> až do roku 1970.</p>
+    </div>
+    
+    <div>
+        <div class="dot-spacer"></div>
+        <div class="dot-spacer"></div>
+        <div class="dot-spacer"></div>
+    </div>
+    
+    <h3 class="look-here">Koukni i sem <i class="fa-light fa-arrow-down-right"></i></h3>
+    <hr>
+
+    <div class="footer">
+        <p class="footer__jiri-sikora">&copy; 2022 Jiří Sikora</p>
+        <div class="footer__social-networks">
+            <a href=""><i class="fa-brands fa-github"></i></a>
+            <a href=""><i class="fa-brands fa-facebook"></i></a>
+            <a href=""><i class="fa-solid fa-circle-envelope"></i></a>
+            <a href=""><i class="fa-regular fa-globe"></i></a>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal" id="modal"></div>
+    
+</body>
+</html>
