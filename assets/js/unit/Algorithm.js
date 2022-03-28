@@ -18,7 +18,7 @@ class Algorithm
         branches = [];
 
         totalsDiv.innerHTML = '';
-        branchingDiv.innerHTML = '';
+        branchingDiv.innerHTML = '<p style="font-size: 18px;">Teď krokuj tlačítkem "<i class="fa-solid fa-angle-right"></i>"</p>';
 
         /* get selected point */
         this.mainPoint = Point.getSelected();
