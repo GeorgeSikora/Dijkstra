@@ -22,7 +22,7 @@ class Scene
                     break;
 
                 case 'Connection':
-                    var c = new Connection();
+                    var c = new PointsConnection();
                     c.uid = uid;
                     c.price = data.price;
                     c.p1 = points.find(p => p.uid === data.p1);
@@ -46,7 +46,7 @@ class Scene
             dataArray.push({ name: 'Connection', uid: c.uid, data: c.save()});
         }
 
-        download(JSON.stringify(dataArray), 'dijkstrSpace.txt', 'text/plain');
+        downloadFile(JSON.stringify(dataArray), 'dijkstrSpace.txt', 'text/plain');
     }
 
     static clear()
@@ -54,27 +54,32 @@ class Scene
         points = [];
         connections = [];
     }
-    
+
     static isClear()
     {
         return points.length == 0 && connections.length == 0;
     }
-}
 
-function download(data, filename, type) {
-    var file = new Blob([data], {type: type});
-    if (window.navigator.msSaveOrOpenBlob) // IE10+
-        window.navigator.msSaveOrOpenBlob(file, filename);
-    else { // Others
-        var a = document.createElement("a"),
-                url = URL.createObjectURL(file);
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(function() {
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);  
-        }, 0); 
+    static downloadFile(data, filename, type)
+    {
+        var file = new Blob([data], {type: type});
+    
+        if (window.navigator.msSaveOrOpenBlob)  // IE10+
+        {
+            window.navigator.msSaveOrOpenBlob(file, filename);
+        }
+        else
+        { // Others
+            var a = document.createElement("a"),
+                    url = URL.createObjectURL(file);
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function() {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);  
+            }, 0); 
+        }
     }
 }

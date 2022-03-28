@@ -1,3 +1,7 @@
+/**
+ * Point - Bod
+ * points in the canvas window
+ */
 
 class Point
 {
@@ -52,7 +56,7 @@ class Point
     }
 
     static draw()
-    { 
+    {
         switch (actionMode)
         {
             case 'addpoint':

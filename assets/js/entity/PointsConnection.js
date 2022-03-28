@@ -1,5 +1,9 @@
+/**
+ * Points Connection - Propojení Bodů
+ *  Line connecting two points between which a path leads in the canvas window
+ */
 
-class Connection
+class PointsConnection
 {
     constructor(p1, p2)
     {
@@ -26,7 +30,8 @@ class Connection
         y2 = this.p2.y;
         this.dist = round(dist(x1, y1, x2, y2) / 10);
 
-        this.hover = Connection.linePoint(x1, y1, x2, y2, mouseX, mouseY) && (!Connection.getHovered() || Connection.getHovered() == this);
+        var hoveredPointConn = PointsConnection.getHovered();
+        this.hover = PointsConnection.linePoint(x1, y1, x2, y2, mouseX, mouseY) && (!hoveredPointConn || hoveredPointConn == this);
     }
 
     draw()
@@ -142,7 +147,7 @@ class Connection
     }
 
     /*
-    Connection.getPointsPathLength([
+    PointsConnection.getPointsPathLength([
         Point.getWhereName('B'), 
         Point.getWhereName('A'), 
         Point.getWhereName('K'), 
@@ -219,9 +224,7 @@ class Connection
 
             pathConns.push(c);
 
-            var result = Connection.searchPoint(neighborPoint, targetPoint, usedConns, pathConns);
-
-            console.log(result);
+            var result = PointsConnection.searchPoint(neighborPoint, targetPoint, usedConns, pathConns);
 
             if (result.status == 'found')
             {
