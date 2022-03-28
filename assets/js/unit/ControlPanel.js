@@ -81,6 +81,10 @@ class ControlPanel
                 });
                 
                 break;
+
+            case 'build':
+                Algorithm.build();
+                break;
     
             case 'prevstep':
     
@@ -92,7 +96,6 @@ class ControlPanel
     
             case 'finalresult':
     
-                Algorithm.build();
                 break;
     
     
