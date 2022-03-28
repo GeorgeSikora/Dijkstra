@@ -1,6 +1,6 @@
 # Dijkstra
 
-I created the project to explain the Dijkstra algorithm.
+Project was created to explain the Dijkstra algorithm.
 
 By creating your own network of points and connections,
 you can build anything you want and try it out!
