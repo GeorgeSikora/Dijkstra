@@ -31,7 +31,7 @@ class PointsConnection
         this.dist = round(dist(x1, y1, x2, y2) / 10);
 
         var hoveredPointConn = PointsConnection.getHovered();
-        this.hover = PointsConnection.linePoint(x1, y1, x2, y2, mouseX, mouseY) && (!hoveredPointConn || hoveredPointConn == this);
+        this.hover = PointsConnection.linePoint(x1, y1, x2, y2, gMouse.x, gMouse.y) && (!hoveredPointConn || hoveredPointConn == this);
     }
 
     draw()
@@ -81,8 +81,8 @@ class PointsConnection
                 var x1, y1, x2, y2;
                 x1 = startPoint.x;
                 y1 = startPoint.y;
-                x2 = mouseX;
-                y2 = mouseY;
+                x2 = gMouse.x;
+                y2 = gMouse.y;
 
                 stroke(0, 127);
                 strokeWeight(3);

@@ -46,7 +46,7 @@ class Scene
             dataArray.push({ name: 'Connection', uid: c.uid, data: c.save()});
         }
 
-        downloadFile(JSON.stringify(dataArray), 'dijkstrSpace.txt', 'text/plain');
+        this.downloadFile(JSON.stringify(dataArray), 'dijkstrSpace.txt', 'text/plain');
     }
 
     static clear()
@@ -81,5 +81,23 @@ class Scene
                 window.URL.revokeObjectURL(url);  
             }, 0); 
         }
+    }
+
+    static getPointsBorder()
+    {
+        var minX = Infinity;
+        var minY = Infinity;
+        var maxX = 0;
+        var maxY = 0;
+
+        for (var p of points)
+        {
+            if (p.x < minX) minX = p.x;
+            if (p.x > maxX) maxX = p.x;
+            if (p.y < minY) minY = p.y;
+            if (p.y > maxY) maxY = p.y;
+        }
+
+        return { minX: minX, maxX: maxX, minY: minY, maxY: maxY };
     }
 }

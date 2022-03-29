@@ -21,7 +21,7 @@ class Point
     {
         if (actionMode == 'cursor' || actionMode == 'connection')
         {
-            this.hover = (abs(mouseX - this.x) < 48 /2 && abs(mouseY - this.y) < 48 /2 || this == dragPoint) && (!Point.getHovered() || Point.getHovered() == this);
+            this.hover = (abs(gMouse.x - this.x) < 48 /2 && abs(gMouse.y - this.y) < 48 /2 || this == dragPoint) && (!Point.getHovered() || Point.getHovered() == this);
         }
 
         if (actionMode == 'cursor')
@@ -62,12 +62,12 @@ class Point
             case 'addpoint':
                 noStroke();
                 fill('#caf');
-                ellipse(mouseX - 12, mouseY - 14, 48, 48);
+                ellipse(gMouse.x - 12, gMouse.y - 14, 48, 48);
         
                 fill('#fff');
                 textSize(28);
                 textAlign(CENTER, CENTER)
-                text(Point.getNextLetter(), mouseX  - 12, mouseY - 14);
+                text(Point.getNextLetter(), gMouse.x  - 12, gMouse.y - 14);
                 break;
         
             default:
@@ -82,7 +82,7 @@ class Point
 
     mouseReleased()
     {
-        if (dist(mouseX, mouseY, mousePressPos.x, mousePressPos.y) < 8 && mouseButton == LEFT && !document.getElementById('ctxmenu')?.matches(':hover'))
+        if (dist(gMouse.x, gMouse.y, mousePressPos.x, mousePressPos.y) < 8 && mouseButton == LEFT && !document.getElementById('ctxmenu')?.matches(':hover'))
         {
             this.selected = this.hover && !this.selected;
         }

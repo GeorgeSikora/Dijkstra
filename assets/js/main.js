@@ -3,8 +3,10 @@ const DEFAULT_SCENE_DATA = '[{"name":"Point","uid":"uid_1106630336391","data":{"
 //const DEFAULT_SCENE_DATA = '[{"name":"Point","uid":"uid_818019431798","data":{"name":"A","x":314.828125,"y":271.96965195246173}},{"name":"Point","uid":"uid_527768357139","data":{"name":"B","x":502.828125,"y":161.98132427843808}},{"name":"Point","uid":"uid_515972473127","data":{"name":"C","x":508.828125,"y":376.95851018675717}},{"name":"Point","uid":"uid_678690014014","data":{"name":"D","x":731.828125,"y":157.98174872665538}},{"name":"Point","uid":"uid_1078398944227","data":{"name":"E","x":734.828125,"y":375.95861629881153}},{"name":"Connection","uid":"uid_828118039758","data":{"p1":"uid_818019431798","p2":"uid_527768357139","price":10}},{"name":"Connection","uid":"uid_1562225057694","data":{"p1":"uid_527768357139","p2":"uid_515972473127","price":1}},{"name":"Connection","uid":"uid_235405295592","data":{"p1":"uid_515972473127","p2":"uid_818019431798","price":3}},{"name":"Connection","uid":"uid_564988251484","data":{"p1":"uid_515972473127","p2":"uid_1078398944227","price":2}},{"name":"Connection","uid":"uid_1579758606269","data":{"p1":"uid_515972473127","p2":"uid_678690014014","price":8}},{"name":"Connection","uid":"uid_231123711617","data":{"p1":"uid_678690014014","p2":"uid_527768357139","price":2}},{"name":"Connection","uid":"uid_1091443816262","data":{"p1":"uid_678690014014","p2":"uid_1078398944227","price":7}}]';
 //const DEFAULT_SCENE_DATA = '[{"name":"Point","uid":"uid_1194525694108","data":{"name":"A","x":238.828125,"y":200.97718590831917}},{"name":"Point","uid":"uid_1077303052743","data":{"name":"B","x":488.828125,"y":69.99108658743631}},{"name":"Point","uid":"uid_939299129678","data":{"name":"C","x":487.828125,"y":270.9697580645161}},{"name":"Point","uid":"uid_496260102167","data":{"name":"D","x":725.828125,"y":202.97697368421052}},{"name":"Point","uid":"uid_730677767400","data":{"name":"E","x":343.828125,"y":429.9528862478778}},{"name":"Point","uid":"uid_1286111445603","data":{"name":"F","x":630.828125,"y":433.95246179966045}},{"name":"Connection","uid":"uid_1574507109033","data":{"p1":"uid_1077303052743","p2":"uid_1194525694108","price":1}},{"name":"Connection","uid":"uid_788682637869","data":{"p1":"uid_1194525694108","p2":"uid_730677767400","price":9}},{"name":"Connection","uid":"uid_1253077853597","data":{"p1":"uid_730677767400","p2":"uid_1286111445603","price":3}},{"name":"Connection","uid":"uid_152269661527","data":{"p1":"uid_496260102167","p2":"uid_1286111445603","price":2}},{"name":"Connection","uid":"uid_317066625065","data":{"p1":"uid_1286111445603","p2":"uid_939299129678","price":8}},{"name":"Connection","uid":"uid_420531721370","data":{"p1":"uid_939299129678","p2":"uid_1077303052743","price":3}},{"name":"Connection","uid":"uid_1070479394678","data":{"p1":"uid_1077303052743","p2":"uid_496260102167","price":7}},{"name":"Connection","uid":"uid_1517961645075","data":{"p1":"uid_939299129678","p2":"uid_1194525694108","price":4}},{"name":"Connection","uid":"uid_455090859390","data":{"p1":"uid_939299129678","p2":"uid_496260102167","price":6}},{"name":"Connection","uid":"uid_624397936849","data":{"p1":"uid_939299129678","p2":"uid_730677767400","price":5}}]';
 
-var mainContainer = document.getElementById('main-container');
+var canvasScale = 1;
+var gMouse = {x: 0, y: 0} // global mouse
 
+var mainContainer = document.getElementById('main-container');
 var actionMode = 'cursor';
 
 var points = [];
@@ -21,10 +23,19 @@ function setup()
     Scene.load(DEFAULT_SCENE_DATA);
     
     ControlPanel.init();
+
+    canvasScale = 0.75;
 }
 
 function draw()
 {
+    gMouse = {
+        x: mouseX / canvasScale,
+        y: mouseY / canvasScale
+    };
+
+    scale(canvasScale);
+
     clear();
     switch (actionMode)
     {
@@ -46,8 +57,8 @@ function draw()
     if (dragPoint)
     {
         var tx, ty, collision, collDist; // colDist - collision distance
-        tx = mouseX + mouseOffset.x; // targetX
-        ty = mouseY + mouseOffset.y; // targetY
+        tx = gMouse.x + mouseOffset.x; // targetX
+        ty = gMouse.y + mouseOffset.y; // targetY
     
         collision = false;
 
@@ -110,9 +121,9 @@ function draw()
 
 function mousePressed()
 {
-    if (mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height) return;
+    if (gMouse.x < 0 || gMouse.x > width / canvasScale || gMouse.y < 0 || gMouse.y > height / canvasScale) return;
 
-    mousePressPos = { x: mouseX, y: mouseY };
+    mousePressPos = { x: gMouse.x, y: gMouse.y };
 
     for (var p of points)
     {
@@ -131,15 +142,15 @@ function mousePressed()
                 {
                     dragPoint = p;
                     mouseOffset = {
-                        x: p.x - mouseX,
-                        y: p.y - mouseY
+                        x: p.x - gMouse.x,
+                        y: p.y - gMouse.y
                     };
                 }
             });
             break;
 
         case 'addpoint':
-            points.push(new Point(Point.getNextLetter(), mouseX  - 12, mouseY - 14));
+            points.push(new Point(Point.getNextLetter(), gMouse.x  - 12, gMouse.y - 14));
             break;
 
         case 'connection':
@@ -186,7 +197,7 @@ function mousePressed()
 
 function mouseReleased()
 {
-    if (mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height) return;
+    if (gMouse.x < 0 || gMouse.x > width / canvasScale || gMouse.y < 0 || gMouse.y > height / canvasScale) return;
 
     dragPoint = null;
     
